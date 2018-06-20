@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<load href="/Public/css/main.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+	<div class="top-panel">
+		<h1>事件驱动金融投资决策系统</h1>
+		<a href="http://120.27.238.101/home/news/index2" style="right:0px;" class="alink">
+			事件驱动搜索
+	        <svg class="icon" aria-hidden="true">
+	            <use xlink:href="#icon-you"></use>
+	        </svg>
+	    </a>
+    </div>	
+	<form action="/home/news/index" method="post" class="top-form">
+		<span class="custom-dropdown">
+		    <select placeholder="搜索数目" name="select-number" id="select">
+		        <option value='10'>10</option>
+		        <option value='20'>20</option>  
+		        <option value='50'>50</option>
+		        <option value='100'>100</option>
+		    </select>
+		</span>
+		<input type="search" placeholder="任意词搜索" name="keyword-any" onsearch="submitFun()"/>
+		<input type="search" placeholder="精确搜索(如600000)" name="keyword-company" onsearch="submitFun()"/>
+		<button type="submit" id="subbtn">搜索</button>
+	</form>
+	<!-- <canvas id="chart1" width="1200" height="400"></canvas> -->
+	<div id="chart" style="width: 1200px; height:400px;margin-top:20px;"></div>
+
+	<h3>一共找到了{$total}个结果，其中最高分为{$max_score}</h3>
+
+	<div class="panel panel-default">
+	      <!-- Default panel contents -->
+	      <div class="panel-heading">关于“<b>{$title}</b>”的前<b>{$number}</b>个结果</div>
+
+	      <!-- Table -->
+	      <table class="table">
+	        <thead>
+	          <tr>
+	            <th>#</th>
+	            <th>标题</th>
+	            <th>股票代码</th>
+	            <th>来源</th>
+	            <th>匹配度</th>
+	            <th>时间</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	        	<volist name="hits" id="result" empty="请输入关键词" >
+			    	<tr>
+			    		<td class="td-number">{$i}</td>							
+						<td><a href="{$result._source.url}" target="_blank" class="td-url">{$result._source.title}</a></td>
+						<td class="td-stock">{$result._source.stockname}</td>
+						<td class="td-source">{$result._source.source}</td>
+						<td class="td-score">{$result._score}</td>
+						<td class="td-time">{$result._source.time}</td>
+			    	</tr>
+	            </volist>
+	        </tbody>
+	      </table>
+  	</div>
+  	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+	<script src="//cdn.bootcss.com/Chart.js/0.2.0/Chart.min.js"></script>
+	<script src="https://cdn.bootcss.com/echarts/3.5.3/echarts.min.js"></script>
+	<script type="text/javascript" src='//at.alicdn.com/t/font_t99z7heowgb65hfr.js'></script>
+	<script type="text/javascript">
+
+		$("#select option[value='{$number}']").attr("selected","selected");
+		$("#chart").hide();
+		// $("input[name='keyword-any']").attr('value','');
+		// $("input[name='keyword-company']").attr('value','');	
+		if({$mode}==0){
+			$("input[name='keyword-company']").attr('value','中国银行');
+			submitFun();
+		}		
+		if({$mode}==1){
+			$("input[name='keyword-company']").attr('value','');
+			$("input[name='keyword-any']").attr('value','{$keyword}');
+		}else if({$mode}==2){
+			$("input[name='keyword-any']").attr('value','');
+			$("input[name='keyword-company']").attr('value','{$keyword}');
+			$("#chart").show();
+			chart_data = {$chart_data};
+			chart_data2 = {$chart_data2};
+			// console.log(chart_data2);
+			var base = +new Date(2014, 11, 29);
+			var oneWeek = 7 * 24 * 3600 * 1000;
+			var date = [];
+
+			for (var i = 0; i < chart_data.length; i++) {
+			    var now = new Date(base += oneWeek);
+			    date.push([now.getFullYear(), now.getMonth()+1, now.getDate()].join('/'));
+			}
+			// console.log(date);
+
+			// 基于准备好的dom，初始化echarts实例
+	        var myChart = echarts.init(document.getElementById('chart'));
+
+	        // 指定图表的配置项和数据
+	        var option = {
+	            title: {
+	                text: '{$title}新闻关注度与股价变化图',
+	                left: 'center',
+	                textStyle:{
+	                	color: '#1abc9c'
+	                }	                
+	            },
+	            tooltip: {
+			        trigger: 'axis',
+			        axisPointer: {
+			            animation: false
+			        }
+			    },
+	            dataZoom: [
+			        {   // 这个dataZoom组件，默认控制x轴。
+			            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+			            start: 66,      // 左边在 10% 的位置。
+			            end: 100         // 右边在 60% 的位置。
+			        }
+			    ],
+	            legend: {
+	                data:['百分比']
+	            },
+	            xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: date
+			    },
+	            yAxis: [{
+		            name : '关注度',
+		            type : 'value',
+		            position: 'left',
+				},
+				{
+		            type: 'value',
+		            scale: true,
+		            name: '股价',
+		            position: 'right',
+		        }
+		        ],
+	            series: [{
+	                name: '关注度',
+	                type: 'line',
+	                smooth: true,
+	                data: chart_data,
+	                lineStyle:{
+	                	normal:{
+	                		color: 'rgba(203,133,137,1)'
+	                	}
+	                }
+	            },
+	            {
+		            name:'股价',
+		            type:'line',
+		            smooth: true,
+	                data: chart_data2,
+	                yAxisIndex: 1,
+	                lineStyle:{
+	                	normal:{
+	                		color: 'rgba(109,207,246,1)'
+	                	}
+	                }
+		        }
+	            ]
+	        };
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart.setOption(option);
+		}	
+
+		function submitFun(){	
+			var form=$('.top-form')[0];
+			form.submit();
+		}
+
+	</script>
+</body>
+</html>
+
+
+
+		

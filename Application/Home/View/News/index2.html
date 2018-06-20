@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<load href="/Public/css/main.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+	<div class="top-panel">
+	<h1>事件驱动金融投资决策系统</h1>
+		<a href="http://120.27.238.101/home/news/index" style="left:0px" class="alink">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-zuo"></use>
+            </svg>
+            新闻检索
+        </a> 	
+        <a href="#top" style="position: absolute;right:0px" title="查看{$object}的关系网络图" class="alink">
+        	关系网络
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-wangluo"></use>
+            </svg>
+        </a>
+     </div>    
+	<form action="/home/news/index2" method="post" class="top-form">
+		<input id="event_input" type="search" placeholder="输入任意问题" name="sentence" onsearch="submitFun()"/>
+		<button type="submit" id="subbtn">搜索</button>
+		<div class="demo">
+			<a href="#" onclick="fill(this)">央行降息对中国银行股价的影响</a>
+			<br>
+			<a href="#" onclick="fill(this)">全国两会对农发种业有什么影响</a>
+			<br>
+			<a href="#" onclick="fill(this)">证监会加强监管对国泰君安的影响</a>
+		</div>
+	</form>
+	<div class="panel panel-default">
+	      <!-- Default panel contents -->
+	      <div class="panel-heading"></div>
+	      <table class="table">
+	        <thead>
+	          <tr>
+	            <th>#</th>
+	            <th>新闻标题</th>
+	            <th>时间</th>
+	            <th>新闻发生时{$object}股价变化情况</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	        	<volist name="news" id="result" empty="   请输入问题" >
+			    	<tr>
+			    		<td class="td-number">{$i}</td>							
+						<td><a href="{$result.url}" target="_blank" class="td-url">{$result.title}</a></td>
+						<td class="td-time">{$result.time}</td>
+						<td class="td-trend">
+						<p id="chart_data{$i}" style="display: none;">{$result.chart_data}</p>
+						<p id="date{$i}"  style="display: none;">{$result.date}</p>
+						<div id="chart{$i}" style="width: 700px; height:200px;margin-left: 50px;"></div>
+						</td>
+			    	</tr>
+	            </volist>
+	        </tbody>
+	      </table>
+  	</div>
+  	<div class="holder" style="width: 100%; height: 1000px;margin-top: 100px;">
+        <div id="top" style="width: 100%; height:100%;"></div>
+    </div>
+  	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+<!-- 	<script src="//cdn.bootcss.com/Chart.js/0.2.0/Chart.min.js"></script> -->
+	<script src="/Public/css/echart.min.js"></script>
+	<script src="https://cdn.bootcss.com/echarts/3.5.3/extension/dataTool.min.js"></script>
+	<script type="text/javascript" src='//at.alicdn.com/t/font_t99z7heowgb65hfr.js'></script>
+	<script type="text/javascript">
+
+		if ({$tag}==0) {
+			$('#event_input').attr('value','央行降息对中国银行股价的影响');
+			submitFun();
+		}
+		if({$tag}==1){
+			$('#event_input').attr('value','{$sentence}');
+			set();
+		}
+		for(var i=1;i<4;i++){
+			// 基于准备好的dom，初始化echarts实例
+			var id = 'chart'+i;
+			var data = '#chart_data'+i;
+			var date = '#date'+i;
+			var data_arr = $(data).text().split(',');
+			var date_arr = $(date).text().replace(/"/g,' ').split(',');
+
+	        var myChart = echarts.init(document.getElementById(id));
+
+	        // 指定图表的配置项和数据
+	        var option = {
+	        	tooltip: {
+			        trigger: 'axis',
+			        axisPointer: {
+			            animation: false
+			        }
+			    },
+			    dataZoom: [
+			        {   // 这个dataZoom组件，默认控制x轴。
+			            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+			            start: 40,      // 左边在 40% 的位置。
+			            end: 60         // 右边在 60% 的位置。
+			        }
+			    ],
+	            xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: date_arr
+			    },
+	            yAxis: [{
+		            type: 'value',
+		            scale: true,
+		            name: '股价',
+		            position: 'left',
+		        }
+		        ],
+	            series: [{
+		            name:'股价',
+		            type:'line',
+		            smooth: true,
+	                data: data_arr,
+	                lineStyle:{
+	                	normal:{
+	                		color: 'rgba(203,133,137,1)'
+	                	}
+	                }
+		        }
+	            ]
+	        };
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart.setOption(option);
+		}
+		function submitFun(){	
+			var form=$('.top-form')[0];
+			form.submit();
+		}
+		function fill(target){
+			$('#event_input').attr('value',$(target).text());
+			var form=$('.top-form')[0];
+			form.submit();
+		}
+		function set() {
+	        var myChart = echarts.init(document.getElementById('top'));
+	        myChart.showLoading();
+	        $.get('/Public/css/result.gexf', function(xml) {
+	            myChart.hideLoading();
+
+	            var graph = echarts.dataTool.gexf.parse(xml);
+	            
+				var line;
+	            graph.nodes.forEach(function(node) {
+	                node.itemStyle = null;
+	                
+					if(parseInt(node.attributes[0]))
+						line = 0;
+					else line = 1;
+	                node.value = node.attributes[line]/100;
+	                node.symbolSize = node.attributes[line]/20;
+	                node.category = 5-node.attributes[line]/100;
+	                // Use random x, y
+	                node.x = node.y = null;
+	                node.draggable = true;
+	                node.label = {
+	                    normal: {
+	                        show: node.symbolSize,
+	                        textStyle: {
+	                            fontSize: node.symbolSize
+	                        }
+	                    }
+	                };
+	            });
+
+	            var categories = [];
+	            for (var i = 0; i < 5; i++) {
+	                categories[i] = {
+	                    name: '第' + (i+1).toString() + "层"
+	                    // name: i
+	                };
+	            }
+
+	            graph.links.forEach(function(link) {
+	                link.value = Math.round(link.weight);
+	                // console.log(link.attributes[1]);
+	            });
+
+	            option = {
+	                tooltip: {},
+	                color: ['#c23531','#2f4554', '#61a0a8', '#d48265', '#91c7ae','#749f83',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
+	                 title: {
+				        text: '{$object}的关系网络图',
+				        x:'center',
+				    },
+	                legend: [{
+	                    selectedMode: 'multiple',
+	                    data: categories.map(function(a) {
+	                        return a.name;
+	                    }),
+	                    bottom: '20',
+	                    left: 'center',
+
+	                }],
+	                series: [{
+	                    name: '节点',
+	                    type: 'graph',
+	                    layout: 'force',
+	                    data: graph.nodes,
+	                    links: graph.links,
+	                    categories: categories,
+	                    label: {
+	                        normal: {
+	                            position: 'right',
+	                        }
+	                    },
+	                    roam: true,
+	                    focusNodeAdjacency: true,
+	                    force: {
+	                        repulsion: 400,
+	                        gravity: 1,
+	                        edgeLength: 50,
+	                    }
+	                }]
+	            };
+
+	            myChart.setOption(option);
+	        }, 'xml');
+	    }
+	</script>
+</body>
+</html>
+
+
+
+		

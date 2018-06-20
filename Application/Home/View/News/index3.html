@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- <link rel="stylesheet" href="/Users/zoe/Documents/nginx-fin/Public/css/main.css" type="text/css" /> -->
+	<load href="/Public/css/main.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<body>
+	<div style="width: 800px;float: left;">
+	<div class="top-panel">
+		<h1>公司事件序列</h1>
+    </div>	
+	<form action="/home/news/index" method="post" class="top-form">
+		<span class="custom-dropdown">
+		    <select placeholder="搜索数目" name="select-number" id="select">
+		        <option value='10'>10</option>
+		        <option value='20'>20</option>  
+		        <option value='50'>50</option>
+		        <option value='100'>100</option>
+		    </select>
+		</span>
+		<input type="search" placeholder="公司名称" name="keyword-any" onsearch="submitFun()"/>
+		<button type="submit" class="subbtn">搜索</button>
+	</form>
+	<!-- <canvas id="chart1" width="1200" height="400"></canvas> -->
+	<h3>事件列表：</h3>
+
+	<div class="panel panel-default">
+	      <!-- Default panel contents -->
+
+	      <!-- Table -->
+	      <table class="table">
+	        <thead>
+	          <tr>
+	            <th>#</th>
+	            <th>事件类型</th>
+	            <th>新闻</th>
+	            <th>日期</th>
+	          </tr>
+	        </thead>
+	        <tbody id="body">
+	            <tr>
+	            	<td class="td-number">1.</td>
+	            	<td class="td-stock">发布年报</td>
+	            	<td class="td-source">xxx公司于前日发布2017年报</td>
+	            	<td class="td-time">2018/1/21</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-number">2.</td>
+	            	<td class="td-stock">股东大会</td>
+	            	<td class="td-source">xxx公司…………</td>
+	            	<td class="td-time">2018/1/31</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-number">3.</td>
+	            	<td class="td-stock">…………</td>
+	            	<td class="td-source">xxx公司…………</td>
+	            	<td class="td-time">2018/2/18</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-number"><button class="subbtn" id="one">预测下一个</button></td>
+	            </tr>
+	        </tbody>
+	      </table> 
+  		</div>
+  	</div>
+  	<div style="margin-left: 900px; padding-top: 100px;">
+  		<div class="top-panel">
+			<h1>事件类型</h1>
+	    </div>	
+	    <div class="panel panel-default">
+	    <table class="table">
+	        <thead>
+	          <tr>
+	            <th>事件类型</th>
+	          </tr>
+	        </thead>
+	        <tbody>
+	            <tr>
+	            	<td class="td-stock">停牌</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">股东大会</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">业绩披露</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">分红</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">交易</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">公司资料变更</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">股权质押</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">首次公开募股</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">增发</td>
+	            </tr>
+	            <tr>
+	            	<td class="td-stock">...</td>
+	            </tr>
+	        </tbody>
+	      </table> 
+	  </div>
+  	</div>
+  	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+	<script src="https://cdn.bootcss.com/Chart.js/2.7.2/Chart.min.js"></script>
+	<script src="https://cdn.bootcss.com/echarts/3.5.3/echarts.min.js"></script>
+	<script type="text/javascript">
+		var $h1=$('<tr><td class="td-number"></td><td class="td-stock">分红</td><td class="td-source">xxx公司…………</td><td class="td-time">3日内</td></tr><tr><td class="td-number"><button class="subbtn" id="two">预测下一个</button></td></tr>'); 
+
+		$("#one").click(function(){
+		  $("#body").append($h1)
+		});
+
+		var $h2=$('<tr><td class="td-number"></td><td class="td-stock">发布新产品</td><td class="td-source">xxx公司…………</td><td class="td-time">10日内</td></tr><tr><td class="td-number"><button class="subbtn" id="three">预测下一个</button></td></tr>'); 
+
+		$("#body").on("click","#two",function(){  
+		    $("#body").append($h2)
+		});  
+
+	</script>
+</body>
+</html>
+		

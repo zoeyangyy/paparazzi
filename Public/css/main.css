@@ -1,0 +1,237 @@
+body {
+	background: #fff;
+	color: #666;
+	font: 16px/180% Arial, Helvetica, sans-serif;
+	width: 1200px;
+	max-width: 96%;
+	margin: 0 auto;
+}
+.alink{
+	position: absolute;
+	line-height: 50px;
+	height: 50px;
+	vertical-align: middle;
+	color:#1abc9c; 
+	text-decoration:none; 	
+} 
+.alink:visited { 
+	color:#1abc9c; 
+	text-decoration:none; 
+} 
+.icon {
+   width: 50px; 
+   height: 50px;
+   fill: #1abc9c;
+   overflow: hidden;
+}
+.top-panel{
+	position: relative;
+	background-color: #1abc9c;
+	height: 50px;
+	text-align: center;
+	vertical-align:center;
+	line-height: 50px;
+	margin-bottom: 20px;
+	border-radius: 10em;
+}
+h1 {	
+	font: 1.7em;
+	color: #FFF;
+}
+
+.top-form{
+	text-align: center;
+}
+input {
+	outline: none;
+}
+input[type=search] {
+	-webkit-appearance: textfield;
+	-webkit-box-sizing: content-box;
+	font-family: inherit;
+	font-size: 100%;
+}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button {
+	display: none; 
+}
+
+input[type=search] {
+	border: solid 1px #1abc9c;
+	padding: 9px 10px 9px 32px;
+	margin-right: 15px;
+	width: 80px;
+	
+	-webkit-border-radius: 10em;
+	-moz-border-radius: 10em;
+	border-radius: 10em;
+	
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	transition: all .5s;
+}
+input[type=search]:focus {
+	width: 130px;
+	background-color: #fff;
+	border-color: #66CC75;
+	
+	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109,207,246,.5);
+}
+
+
+input:-moz-placeholder {
+	color: #999;
+}
+input::-webkit-input-placeholder {
+	color: #999;
+}
+
+#event_input{
+	width: 300px;
+	margin-right: 100px;
+}
+
+#subbtn{
+	  position: relative;
+	  border: none;
+	  vertical-align: middle;
+	  text-align: center;
+	  height: 36px;
+	  width: 80px;
+	  border-radius: 10em;
+	  background-color: #1abc9c;
+	  color: #fff;
+	  font-size: inherit;
+	  text-overflow: '';
+	  -webkit-appearance: button;
+}
+
+/* Custom dropdown */
+.custom-dropdown {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 20px;
+  height: 36px;
+  border-radius: 10em;
+}
+
+.custom-dropdown select {
+  background-color: #1abc9c;
+  color: #fff;
+  font-size: inherit;
+  padding: .5em;
+  padding-right: 2.5em;	
+  height: 36px;
+  border-radius: 10em;
+  text-indent: 0.01px;
+  text-overflow: '';
+  -webkit-appearance: button; /* hide default arrow in chrome OSX */
+}
+
+.custom-dropdown::before,
+.custom-dropdown::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.custom-dropdown::after { /*  Custom dropdown arrow */
+  content: "\25BC";
+  height: 1em;
+  font-size: .625em;
+  line-height: 1;
+  right: 1.2em;
+  top: 50%;
+  margin-top: -.5em;
+}
+
+.custom-dropdown::before { /*  Custom dropdown arrow cover */
+  width: 2em;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 0 10em 10em 0;
+}
+
+.demo{
+	text-align: left;
+	padding-left: 320px;
+	margin-top: 20px;
+	margin-bottom:20px;
+}
+.demo a{
+	color: #999;
+	text-decoration: underline;
+}
+
+/*a:link { 
+	color:#666; 
+	text-decoration:underline; 
+} 
+a:visited { 
+	color:#999; 
+	text-decoration:none; 
+} */
+
+.panel {
+    margin-bottom: 20px;
+    margin-top: 15px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    border-color: #ddd;
+}
+
+.panel-heading {
+    padding: 10px 30px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    text-align: center;
+}
+
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.td-trend{
+	width: 60%;
+}
+.td-number{
+	width: 10%;
+	text-align: center;
+}
+
+.td-url{
+	color:#666; 
+	font-size: 20px;
+	text-decoration:underline;
+	/*font-weight:bold;*/
+}
+.td-url:visited{
+	color:#999; 
+	text-decoration:none;
+	/*font-weight:bold;*/
+}
+
+.td-stock{
+	text-align: center;
+}
+.td-source{
+	text-align: center;
+}
+.td-score{
+	text-align: center;
+	width: 10%;
+}
+.td-time{
+	text-align: center;
+	width: 10%;
+}

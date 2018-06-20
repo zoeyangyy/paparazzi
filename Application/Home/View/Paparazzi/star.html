@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <load href="/Public/css/papa.css" />
+</head>
+
+<body>
+    <div id="main" style="width: 100%;height:100%;"></div>
+    <a href="http://120.27.238.101/home/paparazzi/index2" style="right:20px;top: 20px" class="alink">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-xiangji"></use>
+        </svg>
+    </a>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/echarts/4.1.0/echarts.min.js"></script>
+    <script type="text/javascript" src="//at.alicdn.com/t/font_301490_i4kx0ezospl.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('body').slideDown(2000);
+        $.ajaxSetup({ async: false });
+        var cluster0 = [];
+        var cluster1 = [];
+        var cluster2 = [];
+        var cluster3 = [];
+        $.getJSON('/Public/data/data.json', function(data) {
+            cluster0 = eval(data['cluster0']);
+            cluster1 = eval(data['cluster1']);
+            cluster2 = eval(data['cluster2']);
+            cluster3 = eval(data['cluster3']);
+        });
+
+        var myChart = echarts.init(document.getElementById('main'));
+
+        var option = {
+            title: {
+                text: '星盘2018',
+                subtext: ''
+
+            },
+            grid: {
+                left: '3%',
+                right: '7%',
+                bottom: '3%',
+                containLabel: true
+            },
+            tooltip: {
+                // trigger: 'axis',
+                showDelay: 0,
+                formatter: function(params) {
+                    if (params.value.length > 1) {
+                        return params.value[2] + ' :<br/>' +
+                            params.value[0] + ' ' +
+                            params.value[1] + ' ';
+                    } else {
+                        return params.seriesName + ' :<br/>' +
+                            params.name + ' ' +
+                            params.value + ' ';
+                    }
+                },
+                axisPointer: {
+                    show: true,
+                    type: 'cross',
+                    lineStyle: {
+                        type: 'dashed',
+                        width: 1
+                    }
+                }
+            },
+            toolbox: {
+                feature: {
+                    dataZoom: {},
+                    brush: {
+                        type: ['rect', 'polygon', 'clear']
+                    }
+                }
+            },
+            brush: {},
+            legend: {
+                data: ['影视咖', '综艺咖', '中坚力量', '电影咖'],
+                left: 'center'
+            },
+            xAxis: [{
+                type: 'value',
+                name: '影视曝光指数',
+                nameGap: 30,
+                nameLocation: 'middle',
+                nameTextStyle: {
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'Purple',
+                },
+                nameRotate: 0,
+                scale: true,
+                axisLabel: {
+                    formatter: '{value}',
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                },
+                axisLine: {
+                    symbol: ['none', 'arrow'],
+                    lineStyle: {
+                        color: 'Purple',
+                        width: 2,
+                    }
+                },
+                splitLine: {
+                    show: false
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                name: '专业派谐星',
+                nameGap: 30,
+                nameLocation: 'middle',
+                nameTextStyle: {
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    color: 'Purple',
+                },
+                nameRotate: 90,
+                scale: true,
+                axisLabel: {
+                    formatter: '{value}',
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                },
+                axisLine: {
+                    symbol: ['none', 'arrow'],
+                    lineStyle: {
+                        color: 'Purple',
+                        width: 2,
+                    }
+                },
+                splitLine: {
+                    show: false
+                }
+            }],
+            series: [{
+                    name: '影视咖',
+                    type: 'scatter',
+                    data: cluster0,
+                    markArea: {
+                        silent: true,
+                        itemStyle: {
+                            normal: {
+                                color: 'transparent',
+                                borderWidth: 1,
+                                borderType: 'dashed'
+                            }
+                        },
+                        data: [
+                            [{
+                                name: 'cluster0',
+                                xAxis: 'min',
+                                yAxis: 'min'
+                            }, {
+                                xAxis: 'max',
+                                yAxis: 'max'
+                            }]
+                        ]
+                    },
+                    markPoint: {
+                        data: [
+                            { type: 'max', name: '最大值' },
+                            { type: 'min', name: '最小值' }
+                        ]
+                    },
+                },
+                {
+                    name: '综艺咖',
+                    type: 'scatter',
+                    data: cluster1,
+                    markArea: {
+                        silent: true,
+                        itemStyle: {
+                            normal: {
+                                color: 'transparent',
+                                borderWidth: 1,
+                                borderType: 'dashed'
+                            }
+                        },
+                        data: [
+                            [{
+                                name: 'cluster1',
+                                xAxis: 'min',
+                                yAxis: 'min'
+                            }, {
+                                xAxis: 'max',
+                                yAxis: 'max'
+                            }]
+                        ]
+                    },
+                },
+                {
+                    name: '中坚力量',
+                    type: 'scatter',
+                    data: cluster2,
+                    markArea: {
+                        silent: true,
+                        itemStyle: {
+                            normal: {
+                                color: 'transparent',
+                                borderWidth: 1,
+                                borderType: 'dashed'
+                            }
+                        },
+                        data: [
+                            [{
+                                name: 'cluster2',
+                                xAxis: 'min',
+                                yAxis: 'min'
+                            }, {
+                                xAxis: 'max',
+                                yAxis: 'max'
+                            }]
+                        ]
+                    },
+                },
+                {
+                    name: '电影咖',
+                    type: 'scatter',
+                    data: cluster3,
+                    markArea: {
+                        silent: true,
+                        itemStyle: {
+                            normal: {
+                                color: 'transparent',
+                                borderWidth: 1,
+                                borderType: 'dashed'
+                            }
+                        },
+                        data: [
+                            [{
+                                name: 'cluster3',
+                                xAxis: 'min',
+                                yAxis: 'min'
+                            }, {
+                                xAxis: 'max',
+                                yAxis: 'max'
+                            }]
+                        ]
+                    },
+                },
+            ]
+        };
+
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
+    </script>
+</body>
+
+</html>

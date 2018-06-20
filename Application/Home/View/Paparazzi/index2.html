@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <load href="/Public/css/papa.css" />
+</head>
+<!-- https://codepen.io/anon/pen/GdLMqP -->
+
+<body>
+    <div class="container-search">
+        <form action="/home/paparazzi/cv" method="post" class="search-box">
+            <input type="search" onsearch="submitFun()" name="title" autocomplete="off" />
+            <span></span>
+        </form>
+    </div>
+    <a href="http://120.27.238.101/home/paparazzi/index" style="right:20px;top: 20px" class="alink">
+        <svg class="icon" aria-hidden="true">
+            <use xlink:href="#icon-xiangji"></use>
+        </svg>
+    </a>
+    <div class='container-button'>
+        <span class='pulse-button' id="stars" style="margin-right: 120px;">Star</span>
+        <span class='pulse-button' id="movie" style="margin-left: 120px;">Movie</span>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//at.alicdn.com/t/font_301490_i4kx0ezospl.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('body').slideDown();
+    });
+
+    function submitFun() {
+        var form = $('.search-box')[0];
+        form.submit();
+    }
+    $("#stars").click(function() {
+        window.location.assign("http://120.27.238.101/home/paparazzi/star");
+    });
+    $("#movie").click(function() {
+        window.location.assign("http://120.27.238.101/home/paparazzi/movie");
+    });
+    </script>
+</body>
+
+</html>
